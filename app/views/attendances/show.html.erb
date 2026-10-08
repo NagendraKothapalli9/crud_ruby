@@ -1,0 +1,25 @@
+<h2><%= @student.name %></h2>
+
+<h3>Attendance</h3>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @student.attendances.each do |attendance| %>
+      <tr>
+        <td><%= attendance.date %></td>
+        <td><%= attendance.status %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to "Add Attendance",
+    new_student_attendance_path(@student),
+    class: "btn btn-success" %>

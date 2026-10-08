@@ -1,0 +1,100 @@
+
+<div class="container-fluid bg-dark justify-content-center text-white pt-3 vh-100">
+
+<div class="d-flex justify-content-between">
+<ul class="list-unstyled ms-3">
+  <% @school_admins.each do |admin| %>
+    <li class="fs-4 text-primary"><%= admin.name %></li> 
+    <li><%= admin.email %></li>
+  <% end %>
+</ul>
+<h3 class="text-warning"><%= @school.name %> School Dashboard</h1>
+
+<p class="me-5">
+  <%= link_to 'Logout', logout_path, data: { turbo_method: :delete }, class:" text-decoration-none fs-5 text-danger" %>
+</p>
+
+</div>
+
+  <h5 class="text-center">Students Details</h5>
+
+  <div class="float-end text-center mx-5 ">
+    <%= link_to 'Add Student', new_school_student_path(@school),
+        class: "btn btn-white text-white bg-success" %>
+  </div>
+
+  <div class="table-responsive mt-5" style="max-height: 385px; ">
+
+    <table class="table table-striped table-hover table-bordered text-center position-relative">
+
+      <thead class="position-sticky top-0">
+        <tr>
+          <th scope="col">Id</th>
+          <th>pic </th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Age</th>
+          <th>Course</th>
+          <th>Present Days</th>
+          <th>Absent Days</th>
+          <th>Attendance</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @students.each do |student| %>
+          <tr>
+            <th scope="row"><%= student.id %></th>
+            <td>
+          <% if student.profile_picture.attached? %>
+            <%= image_tag student.profile_picture, width: 30, height: 30, class: "rounded-circle shadow-sm", style: "object-fit: cover;" %>
+          <% else %>
+            <div class="rounded-circle bg-secondary text-white d-inline-flex align-items-center justify-content-center mx-auto" style="width: 40px; height: 40px; font-size: 14px;">
+              <%= student.name.first.upcase %>
+            </div>
+          <% end %>
+        </td>
+            <td><%= student.name %></td>
+            <td><%= student.email %></td>
+            <td><%= student.age %></td>
+            <td><%= student.course %></td>
+            <td><%= student.attendances.where(status: "present").count %></td>
+            <td><%= student.attendances.where(status: "absent").count %></td>
+            <td> <%= link_to "Add", new_student_attendance_path(student),class: "btn btn-success btn-sm" %>
+           <%= link_to "View",student_attendances_path(student),class: "btn btn-warning btn-sm" %></td>
+
+            <td class="justify-content-evenly d-flex">
+
+              <%= link_to student,
+                  class: "btn btn-outline-primary btn-sm",
+                  title: "View" do %>
+                <i class="fa-solid fa-eye"></i>
+              <% end %>
+
+              <%= link_to edit_student_path(student),
+                  class: "btn btn-outline-success btn-sm",
+                  title: "Edit" do %>
+                <i class="fa-solid fa-pen-to-square"></i>
+              <% end %>
+
+              <%= link_to student,
+                  data: {
+                    turbo_method: :delete,
+                    turbo_confirm: 'You Want to Delete this Student?'
+                  },
+                  class: "btn btn-outline-danger btn-sm",
+                  title: "Delete" do %>
+                <i class="fa-solid fa-trash-can"></i>
+              <% end %>
+
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
